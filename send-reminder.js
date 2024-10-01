@@ -2,9 +2,13 @@ const accountSid = process.env.TWILIO_ACCOUNT_SID; // Twilio Account SID
 const authToken = process.env.TWILIO_AUTH_TOKEN; // Twilio Auth Token
 const client = require("twilio")(accountSid, authToken);
 
+// Phone numbers from environment variables
+const toPhoneNumber = process.env.TO_PHONE_NUMBER; // Your phone number
+const fromPhoneNumber = process.env.FROM_PHONE_NUMBER; // Twilio phone number
+
 // Bin schedule
 const bins = ["Grey", "Blue", "Green"];
-const startDate = new Date("2024-01-01"); // Known starting date (adjust as needed)
+const startDate = new Date("2024-10-01"); // Known starting date (adjust as needed)
 
 function getNextBin() {
   const now = new Date();
@@ -18,8 +22,8 @@ function sendReminder(bin) {
   client.messages
     .create({
       body: `Reminder: Put out the ${bin} bin tonight!`,
-      to: "+1234567890", // Your phone number
-      from: "+1987654321", // Your Twilio number
+      to: toPhoneNumber, // Your phone number from environment variable
+      from: fromPhoneNumber, // Twilio number from environment variable
     })
     .then((message) => console.log(`Reminder sent: ${message.sid}`))
     .catch((err) => console.error(err));
