@@ -1,14 +1,12 @@
-const accountSid = process.env.TWILIO_ACCOUNT_SID; // Twilio Account SID
-const authToken = process.env.TWILIO_AUTH_TOKEN; // Twilio Auth Token
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+const toPhoneNumber = process.env.TO_PHONE_NUMBER;
+const fromPhoneNumber = process.env.FROM_PHONE_NUMBER;
+
 const client = require("twilio")(accountSid, authToken);
 
-// Phone numbers from environment variables
-const toPhoneNumber = process.env.TO_PHONE_NUMBER; // Your phone number
-const fromPhoneNumber = process.env.FROM_PHONE_NUMBER; // Twilio phone number
-
-// Bin schedule
-const bins = ["Grey", "Blue", "Green"];
-const startDate = new Date("2024-10-01"); // Known starting date (adjust as needed)
+const bins = ["Grey", "Green/Brown", "Blue"];
+const startDate = new Date("2024-10-01");
 
 function getNextBin() {
   const now = new Date();
@@ -17,16 +15,18 @@ function getNextBin() {
   return bins[binIndex];
 }
 
-// Send SMS reminder
 function sendReminder(bin) {
   client.messages
     .create({
       body: `Reminder: Put out the ${bin} bin tonight!`,
-      to: toPhoneNumber, // Your phone number from environment variable
-      from: fromPhoneNumber, // Twilio number from environment variable
+      to: toPhoneNumber,
+      from: fromPhoneNumber,
     })
     .then((message) => console.log(`Reminder sent: ${message.sid}`))
-    .catch((err) => console.error(err));
+    .catch((err) => {
+      console.error(err);
+      throw new Error("Something broke! See logs for details.");
+    });
 }
 
 const binToCollect = getNextBin();
