@@ -5,14 +5,15 @@ const fromPhoneNumber = process.env.FROM_PHONE_NUMBER;
 
 const client = require("twilio")(accountSid, authToken);
 
-const bins = ["Grey", "Green/Brown", "Blue"];
+const main_bin = ["Grey", "Green", "Blue"];
 const startDate = new Date("2024-10-01");
 
 function getNextBin() {
   const now = new Date();
   const weeksPassed = Math.floor((now - startDate) / (7 * 24 * 60 * 60 * 1000));
   const binIndex = weeksPassed % bins.length;
-  return bins[binIndex];
+  
+  return weeksPassed % 2 == 0 ? main_bin[binIndex] :  main_bin[binIndex] + " and brown";
 }
 
 function sendReminder(bin) {
