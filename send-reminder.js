@@ -11,7 +11,7 @@ const startDate = new Date("2024-10-01");
 function getNextBin() {
   const now = new Date();
   const weeksPassed = Math.floor((now - startDate) / (7 * 24 * 60 * 60 * 1000));
-  const binIndex = weeksPassed % bins.length;
+  const binIndex = weeksPassed % main_bin.length;
   
   return weeksPassed % 2 == 0 ? main_bin[binIndex] :  main_bin[binIndex] + " and brown";
 }
